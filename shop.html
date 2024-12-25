@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Shopping Cart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Dynamic Shopping Cart Simulation</h1>
+  <div class="container">
+    <!-- Available Items -->
+    <div class="items">                                                                                                                                                                                     
+      <h2>Available Items</h2>
+      <div id="itemList"></div>
+    </div>
+    <!-- Shopping Cart -->
+    <div class="cart">
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <p class="total">Total: $<span id="totalPrice">0</span></p>
+    </div>
+  </div>
+  <script>
+    const products = [
+       { id: 1, name: "Dress", price: 10 },
+       { id: 2, name: "Mobiles", price: 15 },
+       { id: 3, name: "Groceries", price: 20 },
+       { id: 4, name: "Softtoys", price: 25 },
+       { id: 5, name: "Kitchen essenitals", price: 40 },
+       { id: 6, name: "Shoes", price: 341 },
+       { id: 7, name: "Beauty products", price: 34 },
+       { id: 8, name: "Plants", price: 16 },
+       { id: 9, name: "Stationary", price: 10 },
+       { id: 10, name: "Hardware", price: 250 },
+       { id: 11, name: "Cluches", price: 2},
+     ];
+     let cart = [];
+     function renderItems() {
+       const itemList = document.getElementById("itemList");
+       itemList.innerHTML = ""; // Clear existing items
+   
+       products.forEach((product) => {
+         const itemDiv = document.createElement("div");
+         itemDiv.className = "item";
+         itemDiv.innerHTML = `
+           <span>${product.name} - $${product.price}</span>
+           <button onclick="addToCart(${product.id})">Add to Cart</button>
+         `;
+         itemList.appendChild(itemDiv);
+       });
+     }
+     // Function to add an item to the cart
+     function addToCart(productId) {
+       const product = products.find((p) => p.id === productId);
+       cart.push(product);
+       updateCart();
+     }
+     // Function to remove an item from the cart
+     function removeFromCart(index) {
+       cart.splice(index, 1);
+       updateCart();
+     }
+     // Function to update the cart display
+     function updateCart() {
+       const cartItems = document.getElementById("cartItems");
+       const totalPriceElement = document.getElementById("totalPrice");
+       cartItems.innerHTML = ""; // Clear current cart items
+       let totalPrice = 0;
+       cart.forEach((item, index) => {
+         totalPrice += item.price;
+   
+         const cartItem = document.createElement("div");
+         cartItem.className = "cart-item";
+         cartItem.innerHTML = `
+           <span>${item.name} - $${item.price}</span>
+           <button onclick="removeFromCart(${index})">Remove</button>
+         `;
+         cartItems.appendChild(cartItem);
+       });
+       // Update the total price
+       totalPriceElement.textContent = totalPrice;
+     }
+     // Initial render of available items
+     renderItems();
+     </script>
+</body>
+</html>
